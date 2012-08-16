@@ -5,16 +5,9 @@ interface
 
 uses
   SysUtils, Classes, Math, Contnrs, 
-{$ifndef LINUX}
-  Windows, ShellApi, 
-{$else}
-  Types, Libc,
-{$endif}
-{$ifdef VCL}
+  Windows, ShellApi,
+  Types,
   Graphics, RLMetaVCL,
-{$else}
-  QGraphics, RLMetaCLX,
-{$endif}
   RLMetaFile, RLConsts, RLUtils, RLFilters, RLTypes, RLPrinters;
 
 type

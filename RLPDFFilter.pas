@@ -1956,14 +1956,14 @@ begin
   dt := Now;
   DecodeDate(dt, Y, M, D);
   DecodeTime(dt, H, N, S, L);
-  Result := 'D:' + PDF_Zeros(Y, 4) + PDF_Zeros(M, 2) + PDF_Zeros(D, 2) +
-    PDF_Zeros(H, 2) + PDF_Zeros(N, 2) + PDF_Zeros(S, 2);
+  Result := String('D:' + PDF_Zeros(Y, 4) + PDF_Zeros(M, 2) + PDF_Zeros(D, 2) +
+    PDF_Zeros(H, 2) + PDF_Zeros(N, 2) + PDF_Zeros(S, 2));
 end;
 
 // String de referência ao objeto aIndex
 class function TRLPDFFilter.PDF_IndirectObjStr(AIndex: Integer): AnsiString;
 begin
-  Result := IntToStr(AIndex) + ' 0 R';
+  Result := Ansistring(IntToStr(AIndex)) + ' 0 R';
 end;
 
 class function TRLPDFFilter.PDF_GetDashPattern(ADashPattern:
