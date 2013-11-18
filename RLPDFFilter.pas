@@ -242,7 +242,7 @@ type
 
     class function PDF_CalcTextLeadingPointSize(AFontSize: Word): Word;
     class function PDF_CurrentDateTimeStr: string;
-    class function PDF_EncodeText(const AText: string): string;
+    class function PDF_EncodeText(const AText: string): Ansistring;
     class function PDF_FloatToStr(AFloat: Double): string;
     class function PDF_GetDashPattern(ADashPattern: TRLPDFFilterDashPatternType): string;
     class function PDF_IndirectObjStr(AIndex: Integer): AnsiString;
@@ -1989,7 +1989,7 @@ begin
   Result := Round((AFontSize * 14.5) / 12);
 end;
 
-class function TRLPDFFilter.PDF_EncodeText(const AText: string): string;
+class function TRLPDFFilter.PDF_EncodeText(const AText: string): Ansistring;
 var
   I: Integer;
 begin
