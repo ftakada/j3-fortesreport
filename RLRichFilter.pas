@@ -7,7 +7,13 @@ uses
   SysUtils, Classes, Windows, Types, Graphics, RLMetaVCL, RLMetaFile,
   RLFilters, RLTypes, RLConsts, RLUtils;
 
+
+
+
 type
+
+  TRLRichFilterImageFormat = (ifBitmap, ifJPeg, ifOriginal);
+
 
   { TRLRichFilter }
 
@@ -29,8 +35,12 @@ type
     fFontNames   :TStringList;
     fPageNo      :Integer;
 
+    FImageFormat: TRLRichFilterImageFormat;
+
+
+
     // methods
-    
+
     procedure   Write(const aStr:AnsiString='');
     procedure   WriteLn(const aStr:AnsiString='');
     procedure   WrapWrite(const aStr:AnsiString; var aWidth:integer);
@@ -63,6 +73,9 @@ type
     property    DisplayName;
     {@prop ShowProgress - ancestor /}
     property    ShowProgress;
+     {@prop ImageFormat - Formato da imagem. :/}
+    property ImageFormat: TRLRichFilterImageFormat
+      read FImageFormat write FImageFormat default ifJPeg;
   end;
   {/@class}
 
@@ -192,6 +205,8 @@ begin
   fFontNames   :=nil;
   fTempStream  :=nil;
   fTempFileName:='';
+
+  FImageFormat := ifJPeg;
   //
   inherited;
   //
@@ -376,7 +391,6 @@ var
   begin
     bmp:=nil;
     try
-      // obriga bitmap 8bits
       aux:=Rect;
       OffsetRect(aux,-aux.Left,-aux.Top);
       bmx:=TBitmap.Create;
@@ -388,7 +402,7 @@ var
         IntersectRect(cut,Rect,cliprct);
         OffsetRect(cut,-Rect.Left,-Rect.Top);
         bmp:=ClipGraphic(bmx,cut,False);
-        bmp.PixelFormat:=pf8bit;
+        bmp.PixelFormat:=pf32bit;
       finally
         bmx.free;
       end;
@@ -439,17 +453,6 @@ var
       if (bmp<>nil) and (bmp<>Graphic) then
         bmp.free;
     end;
-  end;
-  function CreateBitmap(aObj:TRLGraphicObject):TBitmap;
-  begin
-    Result:=TBitmap.Create;
-    Result.PixelFormat:=pf32bit;
-    Result.Width      :=aObj.BoundsRect.Right-aObj.BoundsRect.Left;
-    Result.Height     :=aObj.BoundsRect.Bottom-aObj.BoundsRect.Top;
-    Result.Canvas.Pen.Style:=psSolid;
-    Result.Canvas.Brush.Style:=bsSolid;
-    Result.Canvas.Brush.Color:=clWhite;
-    Result.Canvas.FillRect(Rect(0,0,Result.Width,Result.Height));
   end;
   procedure CopyBrush(Brush:TRLMetaBrush; Bitmap:TBitmap);
   begin
